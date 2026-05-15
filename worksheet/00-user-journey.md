@@ -47,73 +47,97 @@ Nếu nhóm bắt đầu tính cost mà chưa biết tourist hỏi gì → mọi
 ---
 
 ## Bước 2 — Gom lại và phân loại (4 phút)
-
+ 
+Thảo luận trước khi điền bảng:
+- Câu hỏi nào lặp lại? → Ha Long Bay xuất hiện ở Tourist #1 và #2; thời tiết ở #1 và #2.
+- Chủ đề nào bất ngờ? → Tourist #3 hỏi về đầu tư — intent không nằm trong 5 intent mặc định → cần handoff chuyên gia.
+- Câu nào chatbot trả lời được? Câu nào phải chuyển người?
 | # | Câu hỏi (1 dòng) | Intent | Lượt chat | Bot hay Người? |
 |---|---|---|---|---|
-| 1 | US passport — visa on arrival? | Visa/Policy | 2 | ☑ Bot |
-| 2 | Best time to visit Hanoi in November? | Điểm đến/Guide | 2 | ☑ Bot |
-| 3 | Is solo travel safe in Vietnam? | Điểm đến/Guide | 2 | ☑ Bot |
-| 4 | Top 3 things in Ho Chi Minh City? | Điểm đến/Guide | 3 | ☑ Bot |
-| 5 | Group tour package for Ha Long Bay? | Tour/Booking | 1 | ☑ Người (sales) |
-| 6 | Weather in Da Nang in March? | Thời tiết/Sự kiện | 2 | ☑ Bot |
-| 7 | Hotel near Hoan Kiem Lake — mid-range? | Tour/Booking | 1 | ☑ Người (sales) |
-| 8 | Tourist scams to watch out for? | Điểm đến/Guide | 2 | ☑ Bot |
-| 9 | Current visa-on-arrival fee for Australians? | Visa/Policy | 3 | ☑ Bot |
-| 10 | Book private driver Hue → Hoi An? | Tour/Booking | 1 | ☑ Người (sales) |
-
+| 1 | 8 ngày có đủ cho Hanoi–Ha Long–Hoi An không? | Điểm đến/Guide | 3 | ☑ Bot |
+| 2 | US passport — có cần visa 8 ngày không? | Visa/Policy | 2 | ☑ Bot |
+| 3 | Thời tiết Hanoi & Hoi An cuối tháng 6? | Thời tiết/Sự kiện | 2 | ☑ Bot |
+| 4 | Gợi ý lịch trình thư giãn, ít xe buýt? | Điểm đến/Guide | 4 | ☑ Bot |
+| 5 | Ha Long — day trip hay overnight cruise? | Điểm đến/Guide | 3 | ☑ Bot |
+| 6 | Đặt cruise Ha Long + airport transfer cho 2 người? | Tour/Booking | 1 | ☑ Người (sales) |
+| 7 | Food tour có phù hợp người không ăn được cay không? | Điểm đến/Guide | 2 | ☑ Bot |
+| 8 | Group tour Ha Long cho 4 người Hàn? | Tour/Booking | 1 | ☑ Người (sales) |
+| 9 | Thời tiết Da Nang tháng 3 — có tốt cho biển không? | Thời tiết/Sự kiện | 2 | ☑ Bot |
+| 10 | Điểm đến tốt nhất cho hành trình văn hoá authentic? | Điểm đến/Guide | 3 | ☑ Bot |
+| 11 | Thành phố nào kết hợp văn hoá + môi trường đầu tư? | Tour/Booking* | 1 | ☑ Người (specialist) |
+| 12 | Lịch trình kết hợp văn hoá + business insights? | Điểm đến/Guide | 5 | ☑ Bot (phần guide) + Người (phần invest) |
+ 
+*Intent đầu tư không có trong 5 intent mặc định → route về Booking/Handoff gần nhất.
+ 
 ---
-
+ 
 ## Bước 3 — Rút insight cho nhóm
-
+ 
 **Tổng số câu hỏi nhóm gom được**:
-
+ 
 ```text
 21 câu hỏi (7 per tourist × 3)
 ```
-
+ 
 **Phân bố intent thực tế của nhóm** (% mỗi intent):
-
+ 
 ```text
-Guide:     48% (10/21)
-Visa:      19%  (4/21)
-Weather:   10%  (2/21)
-Booking:   19%  (4/21)
-Khiếu nại:  5%  (1/21)
+Guide (địa điểm, lịch trình, ẩm thực, tips):  52%  (11/21)
+Visa/Policy:                                    10%   (2/21)
+Thời tiết/Sự kiện:                             14%   (3/21)
+Tour/Booking (đặt dịch vụ, handoff):           19%   (4/21)
+Khiếu nại:                                      0%   (0/21)
+Không phân loại được (đầu tư/business):         5%   (1/21)
 ```
-
+ 
 **Số lượt chat trung bình để xong 1 chủ đề**:
-
+ 
 ```text
-Guide: 2–3 lượt (tourist hay hỏi follow-up "còn địa điểm nào nữa không?")
-Visa: 3–4 lượt (cần clarify passport type, duration of stay, e-visa vs on-arrival)
-Weather: 2 lượt
+Guide (lịch trình, gợi ý): 3–4 lượt
+  → Tourist hay hỏi follow-up: "còn gì nữa không?", "hợp với người không ăn cay không?",
+    "nên đi mấy ngày ở đó?"
+Visa: 2–3 lượt
+  → Cần clarify passport type, duration of stay, e-visa vs on-arrival, phí hiện tại
+Thời tiết: 2 lượt
+  → 1 hỏi, 1 trả lời; thỉnh thoảng 1 follow-up ("có nên mang áo mưa không?")
 Booking: 1 lượt rồi handoff ngay sang sales
-Khiếu nại: 1–2 lượt rồi handoff manager
+Khiếu nại: không xuất hiện trong nhóm này
 ```
-
+ 
 **Đối chiếu với đề bài** (Scenario A = 4 lượt, Scenario B = 7 lượt):
-
+ 
 ```text
-Hợp lý vì: Guide + Visa chiếm ~67% intent — cả hai đều cần 2–4 lượt.
-Khi tourist hỏi nhiều intent trong 1 conversation (ví dụ: hỏi visa rồi hỏi thêm
-thời tiết) → tổng lượt dễ đạt 6–7, đặc biệt mùa cao điểm khi khách hỏi kỹ hơn
-trước khi ra quyết định đặt tour.
+Hợp lý vì: Guide chiếm 52% intent — và câu hỏi Guide của nhóm đều cần 3–5 lượt
+(ví dụ Tourist #1 hỏi lịch trình 8 ngày → cần clarify phương tiện di chuyển,
+mức độ hoạt động, ưu tiên thiên nhiên hay văn hoá → dễ đạt 4–5 lượt).
+Tourist #3 có combo Guide + Business rất phức tạp → dễ đạt 6–7 lượt ở Scenario B
+khi khách hỏi kỹ trước khi đặt tour hoặc lên kế hoạch chuyến đi dài ngày.
 ```
-
+ 
 **Insight bất ngờ — điều gì nhóm chỉ hiểu sau khi đóng vai?**
-
+ 
 ```text
-1. Tourist thường bundle nhiều intent trong 1 conversation — ví dụ hỏi visa rồi
-   ngay lập tức hỏi "ok vậy tháng mấy nên đi?" → 1 conv chạm 3 intent khác nhau.
-2. Câu hỏi Visa phức tạp hơn tưởng: passport type → duration → e-visa hay on-arrival
-   → phí hiện tại → cần 3–5 lượt mới đủ thông tin, không phải 1 câu hỏi 1 câu trả lời.
-3. Booking thường ngắn gọn và rõ ý — tourist hỏi xong muốn chuyển agent ngay.
+1. Cùng 1 điểm đến (Ha Long Bay) xuất hiện ở 2 tourist với intent khác nhau hoàn toàn:
+   - Tourist #1 hỏi "nên đi day trip hay overnight?" → Guide (bot trả lời được)
+   - Tourist #2 hỏi "có group tour không?" → Booking (handoff sales ngay)
+   → Chatbot phải phân loại đúng sub-intent trong cùng chủ đề địa lý, không chỉ
+     nhận ra keyword "Ha Long Bay".
+ 
+2. Tourist #3 tạo ra intent lai (du lịch + đầu tư) mà 5 intent mặc định không cover.
+   Cần quyết định: route về Guide (trả lời phần văn hoá) + Handoff (phần business)?
+   Hay thêm intent thứ 6 "Investment/Business"? Đây là edge case quan trọng cần
+   define rõ trong thiết kế sản phẩm thực tế.
+ 
+3. Tourist thường bundle nhiều intent trong 1 câu mở đầu — câu 1 của Tourist #1
+   chứa implicit Guide (lịch trình) + implicit Visa (US citizen) + implicit Weather
+   (late June) cùng lúc → classifier phải detect primary intent trước, không phải
+   cố gắng trả lời tất cả cùng 1 lúc.
 ```
-
+ 
 ---
-
-## Bảng kiểm
-
+ 
+## Bảng kiểm trước khi sang file tiếp theo
+ 
 - [x] Mỗi người trong nhóm đã viết ≥5 câu hỏi tourist
 - [x] Đã gom + phân loại intent cho ≥10 câu (bảng trên)
 - [x] Đã có phân bố intent % của nhóm (so với đề bài)
