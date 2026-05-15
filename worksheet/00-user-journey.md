@@ -13,7 +13,16 @@ Nếu nhóm bắt đầu tính cost mà chưa biết tourist hỏi gì → mọi
 ---
 
 ## Bước 1 — Mỗi người đóng vai 1 tourist (4 phút)
-
+### Tourist #1 (Tên thành viên: Thái — vai khách Mỹ, đi nhóm 2 người , about 1,200 for 8 days)
+```text
+1. Hi, my girlfriend and I are visiting Vietnam for the first time in late June. Is 8 days enough for Hanoi, Ha Long Bay, and Hoi An?
+2. I'm from the US. Do I need a visa if I'm staying for 8 days?
+3. What is the weather usually like in Hanoi and Hoi An in late June? Should we expect heavy rain every day?
+4. Can you suggest a relaxed itinerary? We don't want to spend the whole trip sitting in buses.
+5. Is Ha Long Bay worth doing as a day trip, or should we stay overnight on a cruise?
+6. Can your team help book a Ha Long Bay cruise and airport transfers for two people?
+7. We are not used to spicy food. Are food tours still a good idea for us?
+```
 ### Tourist #2 (Tên thành viên: Linh — vai khách Hàn, đi nhóm 4 người, budget mid-range)
 
 ```text
