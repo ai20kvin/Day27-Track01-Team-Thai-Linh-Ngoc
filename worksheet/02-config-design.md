@@ -1,208 +1,129 @@
 # 02 · Configuration Design — Đặt tên + Chốt knobs cho ≥3 Configs
 
-> **Mục tiêu**: Biến phác thảo ở `01-base-flow.md` thành ≥3 configurations chi tiết, mỗi config có tên + 3 knobs đã chốt + lý do chọn.
+> **Mục tiêu**: Biến phác thảo ở `01-base-flow.md` thành ≥3 configurations chi tiết.
 >
-> **Thời gian**: 15 phút (đầu phần Main, trước khi tính cost)
-
----
-
-## Tại sao đặt tên + viết lý do?
-
-Khi present, nhóm sẽ nói "Config 1, Config 2, Config 3" → người nghe sẽ chán ngay. Đặt tên gợi mở (Budget Bot, Premium Concierge, Smart Mix...) giúp memorable + cho thấy nhóm hiểu rõ tradeoff. Viết lý do giúp nhóm tự kiểm tra: "Mình chọn config này vì lý do gì? Có justify được không?"
-
----
-
-## Cách điền
-
-Với mỗi config: đặt tên + chốt 3 knobs + viết 2–3 câu lý do chọn. Mỗi câu lý do phải gắn với 1 tình huống thực tế (volume thấp / khách hỏi visa nhiều / budget bị siết...).
-
-Tham khảo bảng pricing chi tiết tại `cost-reference-card.md` mục **3. Decision Points**.
+> **Thời gian**: 15 phút (đầu phần Main)
 
 ---
 
 ## Config 1
 
-**Tên config** (gợi mở: "Budget Bot", "Bare Minimum", "Lean Mode", "Night Mode" — đặt tên có cá tính):
-
-```text
-(điền tên vào đây)
-```
+**Tên config**: 🪙 **Budget Bot** — Lean & Mean
 
 ### 3 Knobs
 
 **① Model tier**:
-
 ```text
-Response model: __________________ → giá $_____ / $_____  per 1M tokens (input/output)
-Classifier model: __________________ → giá $_____ / $_____  per 1M tokens (hoặc keyword = $0)
+Response model:   GPT-4o-mini  → giá $0.15 / $0.60 per 1M tokens (input/output)
+Classifier model: Keyword rule → $0 (không dùng LLM classifier)
 ```
 
 **② Web search**:
-
 ```text
-□ OFF
-□ ON selective — bật cho intent: __________________
-□ ON broad
+☑ OFF — chỉ dùng RAG, không bật web search cho bất kỳ intent nào
 ```
 
 **③ History management**:
-
 ```text
-□ Last 3
-□ Last 5
-□ Full
-□ Summarize every ___ turns
+☑ Last 3 turns
 ```
 
 ### Lý do nhóm chọn config này
 
-Trước khi viết, tự hỏi:
+Config này phục vụ tốt nhất cho mùa thấp điểm (Scenario A) hoặc giờ thấp điểm ban đêm khi volume thấp và tourist chủ yếu hỏi thông tin cơ bản về địa điểm, ẩm thực. Keyword classifier tiết kiệm hoàn toàn LLM call phân loại intent — phù hợp khi câu hỏi của tourist thường rõ ràng (có từ khoá "visa", "weather", "book"). Last 3 turns giữ cost thấp nhất trong khi vẫn đủ context cho đa số conversation ngắn.
 
-- Config này phục vụ tình huống nào tốt nhất? (mùa thấp điểm? night-time? volume cao đột biến?)
-- Trade-off chính là gì? (Rẻ nhưng kém chất lượng? Đắt nhưng chính xác?)
-- Khách hàng nào sẽ hài lòng nhất với config này? Khách nào sẽ thất vọng?
+### Rủi ro lớn nhất
 
-```text
-(điền 2–3 câu lý do vào đây)
-```
-
-### Rủi ro lớn nhất của config này
-
-```text
-(điền 1 câu rủi ro — ví dụ: "Visa info có thể outdated nếu web OFF",
- "Khách quên context khi history Last 3", "Cost spike nếu volume tăng đột biến")
-```
+Visa info có thể outdated vì web OFF + RAG không được cập nhật real-time; tourist hỏi chi tiết e-visa mới nhất có thể nhận thông tin sai.
 
 ---
 
 ## Config 2
 
-**Tên config**:
-
-```text
-(điền tên vào đây)
-```
+**Tên config**: 👑 **Premium Concierge** — Quality First
 
 ### 3 Knobs
 
 **① Model tier**:
-
 ```text
-Response model: __________________ → giá $_____ / $_____  per 1M tokens
-Classifier model: __________________ → giá $_____ / $_____  per 1M tokens (hoặc keyword)
+Response model:   Claude Sonnet 4.6  → giá $3.00 / $15.00 per 1M tokens
+Classifier model: Claude Haiku 4.5   → giá $0.80 / $4.00 per 1M tokens (~170 tokens/call)
 ```
 
 **② Web search**:
-
 ```text
-□ OFF
-□ ON selective — bật cho intent: __________________
-□ ON broad
+☑ ON selective — bật cho intent: Visa + Weather
 ```
 
 **③ History management**:
-
 ```text
-□ Last 3
-□ Last 5
-□ Full
-□ Summarize every ___ turns
+☑ Full history
 ```
 
 ### Lý do nhóm chọn config này
 
-```text
-(điền 2–3 câu lý do vào đây)
-```
+Config phục vụ mùa cao điểm (Scenario B) khi tourist có budget cao, hỏi phức tạp (itinerary, visa specific, luxury resort), và kỳ vọng câu trả lời chính xác + detailed. Sonnet 4.6 cho quality cao nhất (est. 88%+), LLM classifier tránh sai phân loại với câu hỏi ambiguous. Web search bật cho Visa + Weather đảm bảo info luôn real-time — tránh rủi ro sai visa fee/policy. Full history giúp bot nhớ preference của tourist từ đầu conversation đến cuối.
 
-### Rủi ro lớn nhất của config này
+### Rủi ro lớn nhất
 
-```text
-(điền 1 câu rủi ro)
-```
+Monthly cost cao đáng kể ở Scenario B — nếu volume spike mà conversion booking không tăng tương ứng, ROI có thể không justify cost Premium.
 
 ---
 
 ## Config 3
 
-**Tên config**:
-
-```text
-(điền tên vào đây)
-```
+**Tên config**: ⚖️ **Smart Mix** — Balanced for All Seasons
 
 ### 3 Knobs
 
 **① Model tier**:
-
 ```text
-Response model: __________________ → giá $_____ / $_____  per 1M tokens
-Classifier model: __________________ → giá $_____ / $_____  per 1M tokens (hoặc keyword)
+Response model:   Claude Haiku 4.5   → giá $0.80 / $4.00 per 1M tokens
+Classifier model: Keyword rule       → $0
 ```
 
 **② Web search**:
-
 ```text
-□ OFF
-□ ON selective — bật cho intent: __________________
-□ ON broad
+☑ ON selective — bật cho intent: Visa + Weather
 ```
 
 **③ History management**:
-
 ```text
-□ Last 3
-□ Last 5
-□ Full
-□ Summarize every ___ turns
+☑ Last 5 turns
 ```
 
 ### Lý do nhóm chọn config này
 
-```text
-(điền 2–3 câu lý do vào đây)
-```
+Smart Mix là config "deploy quanh năm" — không cần đổi config theo mùa. Haiku 4.5 đủ tốt cho phần lớn câu hỏi tourist (quality est. ~80%), nhanh hơn Sonnet đáng kể. Web ON cho Visa + Weather giữ accuracy ở 2 intent dễ outdated nhất. Last 5 đủ nhớ context cho conversation 4–7 lượt mà không phát sinh chi phí lớn như Full history ở Scenario B (7 turns).
 
-### Rủi ro lớn nhất của config này
+### Rủi ro lớn nhất
 
-```text
-(điền 1 câu rủi ro)
-```
+Với câu hỏi rất phức tạp (ví dụ: multi-destination itinerary 2 tuần với yêu cầu cụ thể), Haiku có thể cho câu trả lời kém chi tiết hơn Sonnet → tourist cần hỏi thêm nhiều lượt → tăng cost per conversation không mong muốn.
 
 ---
 
-## Config 4 (optional — nếu thời gian dư)
+## Config 4 (optional)
 
-Nhóm có thể thiết kế thêm config thứ 4 để có thêm điểm so sánh. Không bắt buộc.
-
-**Tên config**:
-
-```text
-(điền tên vào đây)
-```
+**Tên config**: 🌙 **Night Mode** — Lean + Web Weather
 
 ### 3 Knobs
 
 ```text
-Model: ___    Web: ___    History: ___
+Model: GPT-4o-mini (response) + Keyword classifier ($0)
+Web: ON selective — chỉ Weather (không bật Visa)
+History: Last 3
 ```
 
 ### Lý do
 
-```text
-(điền 1–2 câu)
-```
+Variant của Budget Bot — thêm web search cho Weather vì đây là intent gần như bắt buộc real-time. Tắt web Visa để giữ cost thấp; tradeoff chấp nhận được nếu team cập nhật RAG visa hàng tuần. Phù hợp giờ thấp điểm hoặc khi budget bị siết.
 
 ---
 
-## Bảng kiểm trước khi tính cost
+## Bảng kiểm
 
-- [ ] ≥3 configs đã đặt tên (không chỉ "Config 1/2/3")
-- [ ] Mỗi config đã chốt rõ 3 knobs (không còn ô trống)
-- [ ] Mỗi config có ≥2 câu lý do
-- [ ] 3 configs đủ khác biệt — không phải chỉ đổi mỗi 1 knob nhỏ
-- [ ] Nhóm đồng thuận đây là 3 configs đáng so sánh
-
-**Nếu 3 configs quá giống nhau** (chỉ đổi model, knobs khác giống hệt) → quay lại tweak. Mục đích là thấy tradeoff — configs giống nhau quá → không thấy tradeoff.
-
-Xong → mở `03-cost-calculation.md` để bắt đầu tính cost.
+- [x] ≥3 configs đã đặt tên (không chỉ "Config 1/2/3")
+- [x] Mỗi config đã chốt rõ 3 knobs
+- [x] Mỗi config có ≥2 câu lý do
+- [x] 3 configs đủ khác biệt về model tier, web strategy, và history
+- [x] Nhóm đồng thuận đây là 3 configs đáng so sánh

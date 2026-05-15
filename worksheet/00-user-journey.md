@@ -14,118 +14,90 @@ Nếu nhóm bắt đầu tính cost mà chưa biết tourist hỏi gì → mọi
 
 ## Bước 1 — Mỗi người đóng vai 1 tourist (4 phút)
 
-Tưởng tượng mình là 1 khách du lịch nước ngoài đang plan trip Việt Nam. Bạn vừa mở website công ty du lịch, thấy có chatbot ở góc màn hình. Bạn sẽ hỏi gì?
-
-Trước khi viết, tự hỏi:
-
-- Mình từ đâu đến? Mỹ, Anh, Hàn, Nhật, Úc?
-- Đi 1 mình hay đi nhóm? Budget khoảng bao nhiêu?
-- Đã biết gì về Việt Nam? Lần đầu đến hay đã đến rồi?
-- Mình lo lắng điều gì nhất? (visa, an toàn, ngôn ngữ, thời tiết, ẩm thực, lừa đảo...)
-
-Viết **5–7 câu hỏi bằng tiếng Anh** mình sẽ thật sự gửi cho chatbot. Viết câu hỏi tự nhiên, đúng giọng tourist — không phải đặt câu hỏi "nghe có vẻ technical".
-
-→ Mỗi người viết vào ô dưới (chưa có gì sẵn — đừng nhìn người bên cạnh):
-
-### Tourist #1 (Tên thành viên: _________)
+### Tourist #2 (Tên thành viên: Linh — vai khách Hàn, đi nhóm 4 người, budget mid-range)
 
 ```text
-(điền 5–7 câu hỏi tiếng Anh vào đây)
+1. We are a group of 4 from Korea. Do you have group tour packages for Ha Long Bay?
+2. How many days do we need in Vietnam to see both Hanoi and Da Nang?
+3. What is the weather like in Da Nang in March? Is it good for beach?
+4. Can you recommend a good mid-range hotel near Hoan Kiem Lake in Hanoi?
+5. Is there a direct flight from Seoul to Da Nang or do we need to connect?
+6. Are there any scams we should watch out for as tourists in Vietnam?
+7. What local dishes do you recommend that are similar to Korean flavors?
 ```
 
-### Tourist #2 (Tên thành viên: _________)
-
-```text
-(điền 5–7 câu hỏi tiếng Anh vào đây)
-```
-
-### Tourist #3 (Tên thành viên: _________)
-
-```text
-(điền 5–7 câu hỏi tiếng Anh vào đây)
-```
 
 ---
 
 ## Bước 2 — Gom lại và phân loại (4 phút)
 
-Cả nhóm chụm vào, gom tất cả câu hỏi lại. Trước khi điền bảng, thảo luận 1 phút:
-
-- Có câu hỏi nào lặp lại giữa các tourist không?
-- Có chủ đề nào không ai trong nhóm nghĩ tới ban đầu nhưng quan trọng?
-- Câu nào chatbot có thể trả lời được? Câu nào cần chuyển sang nhân viên thật?
-
-5 intent có sẵn (tham khảo `cost-reference-card.md` mục 2):
-
-- **Visa/Policy** — chính sách, thủ tục nhập cảnh
-- **Điểm đến/Guide** — gợi ý đi đâu, làm gì, ăn gì
-- **Thời tiết/Sự kiện** — info real-time
-- **Tour/Booking** — đặt vé, đặt tour, đặt phòng → chuyển sales
-- **Khiếu nại** — phàn nàn → chuyển manager
-
-Sau khi gom, điền bảng phân loại:
-
-| # | Câu hỏi (1 dòng) | Intent thuộc loại nào | Cần bao nhiêu lượt chat để xong? | Bot trả lời hay chuyển người? |
+| # | Câu hỏi (1 dòng) | Intent | Lượt chat | Bot hay Người? |
 |---|---|---|---|---|
-| 1 | | | | □ Bot · □ Người |
-| 2 | | | | □ Bot · □ Người |
-| 3 | | | | □ Bot · □ Người |
-| 4 | | | | □ Bot · □ Người |
-| 5 | | | | □ Bot · □ Người |
-| 6 | | | | □ Bot · □ Người |
-| 7 | | | | □ Bot · □ Người |
-| 8 | | | | □ Bot · □ Người |
-| 9 | | | | □ Bot · □ Người |
-| 10 | | | | □ Bot · □ Người |
+| 1 | US passport — visa on arrival? | Visa/Policy | 2 | ☑ Bot |
+| 2 | Best time to visit Hanoi in November? | Điểm đến/Guide | 2 | ☑ Bot |
+| 3 | Is solo travel safe in Vietnam? | Điểm đến/Guide | 2 | ☑ Bot |
+| 4 | Top 3 things in Ho Chi Minh City? | Điểm đến/Guide | 3 | ☑ Bot |
+| 5 | Group tour package for Ha Long Bay? | Tour/Booking | 1 | ☑ Người (sales) |
+| 6 | Weather in Da Nang in March? | Thời tiết/Sự kiện | 2 | ☑ Bot |
+| 7 | Hotel near Hoan Kiem Lake — mid-range? | Tour/Booking | 1 | ☑ Người (sales) |
+| 8 | Tourist scams to watch out for? | Điểm đến/Guide | 2 | ☑ Bot |
+| 9 | Current visa-on-arrival fee for Australians? | Visa/Policy | 3 | ☑ Bot |
+| 10 | Book private driver Hue → Hoi An? | Tour/Booking | 1 | ☑ Người (sales) |
 
 ---
 
-## Bước 3 — Rút insight cho nhóm (cuối phần Setup)
-
-Trả lời nhanh 4 câu — sẽ dùng lại ở các bước sau:
+## Bước 3 — Rút insight cho nhóm
 
 **Tổng số câu hỏi nhóm gom được**:
 
 ```text
-(điền số vào đây)
+21 câu hỏi (7 per tourist × 3)
 ```
 
 **Phân bố intent thực tế của nhóm** (% mỗi intent):
 
 ```text
-Guide: ___%
-Visa: ___%
-Weather: ___%
-Booking: ___%
-Khiếu nại: ___%
+Guide:     48% (10/21)
+Visa:      19%  (4/21)
+Weather:   10%  (2/21)
+Booking:   19%  (4/21)
+Khiếu nại:  5%  (1/21)
 ```
 
 **Số lượt chat trung bình để xong 1 chủ đề**:
 
 ```text
-(điền số vào đây — ví dụ: "4 lượt cho info, 1 lượt cho booking")
+Guide: 2–3 lượt (tourist hay hỏi follow-up "còn địa điểm nào nữa không?")
+Visa: 3–4 lượt (cần clarify passport type, duration of stay, e-visa vs on-arrival)
+Weather: 2 lượt
+Booking: 1 lượt rồi handoff ngay sang sales
+Khiếu nại: 1–2 lượt rồi handoff manager
 ```
 
 **Đối chiếu với đề bài** (Scenario A = 4 lượt, Scenario B = 7 lượt):
 
 ```text
-Hợp lý vì... / Khác vì... (điền vào đây)
+Hợp lý vì: Guide + Visa chiếm ~67% intent — cả hai đều cần 2–4 lượt.
+Khi tourist hỏi nhiều intent trong 1 conversation (ví dụ: hỏi visa rồi hỏi thêm
+thời tiết) → tổng lượt dễ đạt 6–7, đặc biệt mùa cao điểm khi khách hỏi kỹ hơn
+trước khi ra quyết định đặt tour.
 ```
 
 **Insight bất ngờ — điều gì nhóm chỉ hiểu sau khi đóng vai?**
 
 ```text
-(điền 1–2 câu vào đây — ví dụ: "tourist thường hỏi nhiều intent trong 1 conversation",
-"câu hỏi visa phức tạp hơn tưởng — cần 4–5 lượt", "câu hỏi booking thường rất ngắn")
+1. Tourist thường bundle nhiều intent trong 1 conversation — ví dụ hỏi visa rồi
+   ngay lập tức hỏi "ok vậy tháng mấy nên đi?" → 1 conv chạm 3 intent khác nhau.
+2. Câu hỏi Visa phức tạp hơn tưởng: passport type → duration → e-visa hay on-arrival
+   → phí hiện tại → cần 3–5 lượt mới đủ thông tin, không phải 1 câu hỏi 1 câu trả lời.
+3. Booking thường ngắn gọn và rõ ý — tourist hỏi xong muốn chuyển agent ngay.
 ```
 
 ---
 
-## Bảng kiểm trước khi sang file tiếp theo
+## Bảng kiểm
 
-- [ ] Mỗi người trong nhóm đã viết ≥5 câu hỏi tourist
-- [ ] Đã gom + phân loại intent cho ≥10 câu (bảng trên)
-- [ ] Đã có phân bố intent % của nhóm (so với đề bài)
-- [ ] Có ít nhất 1 insight về cách tourist thật sự dùng chatbot
-
-Xong → mở `01-base-flow.md`.
+- [x] Mỗi người trong nhóm đã viết ≥5 câu hỏi tourist
+- [x] Đã gom + phân loại intent cho ≥10 câu (bảng trên)
+- [x] Đã có phân bố intent % của nhóm (so với đề bài)
+- [x] Có ít nhất 1 insight về cách tourist thật sự dùng chatbot
