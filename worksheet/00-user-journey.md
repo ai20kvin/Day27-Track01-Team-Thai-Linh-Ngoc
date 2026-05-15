@@ -34,8 +34,16 @@ Nếu nhóm bắt đầu tính cost mà chưa biết tourist hỏi gì → mọi
 6. Are there any scams we should watch out for as tourists in Vietnam?
 7. What local dishes do you recommend that are similar to Korean flavors?
 ```
-
-
+### Tourist #3 ( Tên thành viên Ngọc - vai người Việt, đi cùng bạn Slovakia, kết hợp du lịch & khảo sát đầu tư)
+```text
+1. I would like to introduce Vietnam to my friend from Slovakia — which destinations are best for an authentic cultural journey?
+2. Which places best represent Vietnam’s history, traditional craft villages, and local lifestyles?
+3. Which cities combine strong cultural identity with dynamic economic development for investment exploration?
+4. Are there any cultural experiences, traditional festivals, or local activities that we should not miss?
+5. Which regions are especially known for traditional cuisine and the hospitality of local people?
+6. Which cities are currently the most attractive for foreign investors and entrepreneurs?
+7. Could you suggest an itinerary that combines cultural exploration, local experiences, and insights into Vietnam’s business environment?
+```
 ---
 
 ## Bước 2 — Gom lại và phân loại (4 phút)
