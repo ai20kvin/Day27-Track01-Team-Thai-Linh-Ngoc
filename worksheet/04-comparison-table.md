@@ -1,106 +1,107 @@
 # 04 · Comparison Table — Bảng so sánh đầy đủ
 
-> **Mục tiêu**: Tổng hợp tất cả số đã tính thành 1 bảng so sánh duy nhất.
+> **Mục tiêu**: Tổng hợp số từ `03-cost-calculation.md` thành một bảng so sánh duy nhất để present.
 
 ---
 
 ## Bảng chính
 
-| | Config 1 | Config 2 | Config 3 |
-|---|---|---|---|
-| **Tên** | 🪙 Budget Bot | 👑 Premium Concierge | ⚖️ Smart Mix |
-| **① Model** | GPT-4o-mini ($0.15/$0.60 per 1M) | Claude Sonnet 4.6 ($3/$15 per 1M) + Haiku classifier | Claude Haiku 4.5 ($0.80/$4 per 1M) |
-| **② Web search** | OFF | ON selective (Visa + Weather) | ON selective (Visa + Weather) |
-| **③ History** | Last 3 turns | Full history | Last 5 turns |
-| **Intent classifier** | Keyword ($0) | LLM — Haiku 4.5 | Keyword ($0) |
-| **Cost / conv (Scenario A — 4 turns)** | $0.00156 | $0.04218 | $0.01638 |
-| **Cost / conv (Scenario B — 7 turns)** | $0.00197 | $0.05349 | $0.02057 |
-| **Monthly A** (300 conv/day × 30) | $140 | $3,797 | $147 |
-| **Monthly B** (1,200 conv/day × 30) | $71 | $1,926 | $740 |
-| **vs human $4,500/mo (A)** | rẻ **32×** | rẻ **1.2×** | rẻ **30.6×** |
-| **vs human $18,000/mo (B)** | rẻ **254×** | rẻ **9.3×** | rẻ **24.3×** |
-| **Savings % (A)** | **96.9%** | **15.6%** | **96.7%** |
-| **Savings % (B)** | **99.6%** | **89.3%** | **95.9%** |
-| **Quality estimate** | Low-Med (70%) | High (88%+) | Medium (80%) |
-| **Speed estimate** | High (~200ms) | Low (2–4s) | Med-High (~500ms) |
-| **Điểm yếu chính** | Visa info có thể outdated; context ngắn, dễ quên preference | Scenario A gần bằng human cost; chậm do Sonnet + web | Haiku có thể kém với câu itinerary phức tạp |
-| **Best for** | Mùa thấp điểm / giờ thấp điểm / volume thấp | Mùa cao điểm, khách premium, cần accuracy cao | Deploy quanh năm, balance cost-quality |
+| | Config 1 | Config 2 | Config 3 | Config 4 |
+|---|---|---|---|---|
+| **Tên** | Budget Bot | Premium Concierge | Smart Mix | Lean Night Mode |
+| **Model** | GPT-4o-mini | Claude Sonnet 4.6 | Gemini 2.5 Flash | GPT-4o-mini |
+| **Web search** | OFF | Visa + Weather | Visa + Weather | Weather only |
+| **History** | Last 3 | Full history | Last 5 | Last 3 |
+| **Intent classifier** | Keyword | LLM: Claude Haiku 4.5 | Keyword | Keyword |
+| **Cost/conv A** | $0.001499 | $0.047271 | $0.015330 | $0.004747 |
+| **Cost/conv B** | $0.001794 | $0.059815 | $0.019124 | $0.007478 |
+| **Monthly A** | $13.49 | $425.44 | $137.97 | $42.73 |
+| **Monthly B** | $64.60 | $2,153.36 | $688.47 | $269.22 |
+| **vs human A** | rẻ 333.5× | rẻ 10.6× | rẻ 32.6× | rẻ 105.3× |
+| **vs human B** | rẻ 278.6× | rẻ 8.4× | rẻ 26.1× | rẻ 66.9× |
+| **Savings A** | 99.70% | 90.55% | 96.93% | 99.05% |
+| **Savings B** | 99.64% | 88.04% | 96.18% | 98.50% |
+| **Quality estimate** | Low-Medium | High | Medium-High | Medium |
+| **Speed estimate** | High | Low-Medium | Medium-High | High |
+| **Điểm yếu chính** | Visa/Weather stale | Cost và latency cao | Keyword miss multi-intent | Visa vẫn stale |
+| **Best for** | Cost floor, low risk FAQ | Premium customers, complex trips | Default production config | Night/low-traffic fallback |
 
 ---
 
 ## Quan sát nhanh từ bảng
 
-### Câu 1 — Config rẻ nhất / đắt nhất?
+### Câu 1 — Config rẻ nhất là gì? Đắt nhất là gì?
 
 ```text
-Rẻ nhất: Budget Bot — monthly B = $71/tháng
-Đắt nhất: Premium Concierge — monthly A = $3,797/tháng (Scenario A đắt hơn B!)
-Chênh: $3,797 / $71 ≈ 53× lần
+Rẻ nhất: Budget Bot — monthly B = $64.60
+Đắt nhất: Premium Concierge — monthly B = $2,153.36
+Chênh: 2,153.36 / 64.60 ≈ 33.3×
 ```
 
-*Điều thú vị: Premium Concierge Scenario A ($3,797) đắt hơn Scenario B ($1,926) —
-vì Scenario B có 45% handoff nên AI-served conversation ít hơn.*
+Nếu chỉ nhìn cost, Budget Bot thắng tuyệt đối. Nhưng nó thắng bằng cách tắt web hoàn toàn, nên rủi ro sai Visa/Weather cao nhất. Nếu chỉ xét các config có web cho Visa + Weather, Smart Mix rẻ hơn Premium khoảng `2,153.36 / 688.47 ≈ 3.1×` ở Scenario B.
 
 ### Câu 2 — Knob nào ảnh hưởng cost nhiều nhất?
 
 ```text
-Model tier ảnh hưởng lớn nhất:
-- Budget Bot (GPT-4o-mini) vs Smart Mix (Haiku): $0.00156 vs $0.01638/conv → chênh ≈10.5×
-- Smart Mix (Haiku) vs Premium (Sonnet): $0.01638 vs $0.04218/conv → chênh ≈2.6×
-- Budget Bot vs Premium: chênh ≈27× (cùng scenario A)
+1. Web search ảnh hưởng lớn ở intent Visa/Weather vì mỗi query thêm $0.008.
+   Ví dụ Smart Mix A:
+   - Guide 4 turns = $0.004464
+   - Visa 4 turns = $0.037424
+   → Visa đắt hơn Guide ~8.4× chủ yếu do web API.
 
-Web search (ON selective vs OFF):
-- Visa turn: Budget Bot $0.000500/turn vs Smart Mix $0.008448/turn (T4)
-  → Chênh ~16× ở turn có web — nhưng chỉ áp dụng cho 25%+10% intent
-  → Impact thực tế: khoảng $6–$7/month ở Scenario A (nhỏ so với model cost)
+2. Model tier ảnh hưởng lớn trên mọi intent.
+   Guide A:
+   - Budget Bot GPT-4o-mini = $0.001764
+   - Smart Mix Gemini Flash = $0.004464
+   - Premium Sonnet = $0.038440
+   → Premium đắt hơn Budget ~21.8× cho cùng Guide 4 turns.
 
-History (Last 3 vs Full):
-- Ở Turn 7: Full history = 1,560 tokens extra vs Last 3 = 780 tokens extra
-  → Chênh 780 tokens × Sonnet $3/M = $0.00234 per turn → ảnh hưởng thứ 3
-  → Ở conversation 7 turns, Full vs Last 5 chênh khoảng 5–8% cost/conv
-
-Ranking: Model tier > Web search ON/OFF > History length
+3. History length ảnh hưởng ít hơn web và model trong lab này.
+   Full history làm input tăng đều theo turn, nhưng tác động nhỏ hơn $0.008/query của web search.
 ```
 
-### Câu 3 — Tại sao Scenario B không đắt ×4 lần Scenario A?
+Ranking thực tế trong bảng của nhóm:
 
 ```text
-Scenario B volume = ×4 lần A, turns = ×1.75 (7 vs 4) → lý thuyết đáng ra ×7.
-Thực tế monthly B thường THẤP HƠN monthly A (Budget Bot: $71 < $140):
-
-Lý do chính: Intent mix Scenario B rất khác —
-- Booking tăng từ 10% → 35%, Complaint 5% → 10% → handoff = 45% (vs 15% ở A)
-- 45% conversation = $0 LLM cost hoàn toàn
-- Chỉ 55% conversation thật sự chạy LLM (660/1,200 conv/ngày)
-
-Ảnh hưởng: dù volume ×4, LLM-served conversations chỉ tăng ×(0.55×1200)/(0.85×300)
-= 660/255 ≈ 2.6× → cộng thêm turns dài hơn ×1.75 → tổng token ≈ ×4.5, không phải ×7
-
-Đây là lý do Scenario B ở Budget Bot rẻ hơn A ($71 < $140): volume ×4 nhưng
-AI-served % giảm từ 85% → 55% → giảm LLM workload đáng kể.
+Web search on high-frequency intent > Model tier > History length > Classifier
 ```
+
+### Câu 3 — Tại sao Scenario B không đắt ×7 lần Scenario A?
+
+Scenario B có volume gấp 4 và turns/conversation gấp 1.75, nên nếu mọi intent đều dùng AI thì có thể kỳ vọng monthly cost gần `4 × 1.75 = 7×` Scenario A.
+
+Thực tế bảng chỉ tăng khoảng 4.8-5.1×:
+
+```text
+Budget Bot: 64.60 / 13.49 = 4.8×
+Premium:    2,153.36 / 425.44 = 5.1×
+Smart Mix:  688.47 / 137.97 = 5.0×
+Lean:       269.22 / 42.73 = 6.3×
+```
+
+Lý do chính: Scenario B có **45% Booking + Complaint**, tức là gần một nửa conversation được handoff sớm và không chạy response generation. AI-served ratio giảm từ 85% ở Scenario A xuống 55% ở Scenario B, nên workload không tăng đúng 7×.
 
 ### Câu 4 — Có config nào AI đắt hơn human không?
 
 ```text
-Không có config nào đắt hơn human, nhưng Premium Concierge Scenario A ($3,797)
-gần bằng human baseline ($4,500) — chỉ tiết kiệm 15.6%.
+Không. Tất cả configs đều rẻ hơn human baseline rất nhiều.
 
-Nếu tính thêm chi phí ẩn của AI (monitoring, RAG maintenance, web search API,
-prompt engineering updates): có thể Premium Scenario A thực tế ngang bằng hoặc
-cao hơn human cost một chút.
+Human baseline:
+- Scenario A: $4,500/month
+- Scenario B: $18,000/month
 
-Tuy nhiên AI vẫn justify ở 4 điểm:
-1. 24/7 — human agent không làm việc 3AM nhưng tourist quốc tế hỏi mọi lúc
-2. Đa ngôn ngữ — handle English + Korean + Japanese + Chinese không cần hire thêm
-3. Scale linear — volume tăng ×4, cost không tăng ×4 như human
-4. Consistency — không bao giờ mất kiên nhẫn, không trả lời sai vì mệt mỏi
+Config đắt nhất là Premium Concierge:
+- Scenario A: $425.44/month → vẫn rẻ hơn human 10.6×
+- Scenario B: $2,153.36/month → vẫn rẻ hơn human 8.4×
 ```
+
+Tuy vậy, "rẻ hơn human" chưa đủ để chọn Premium làm default. Premium chỉ nên dùng khi quality thật sự tạo thêm booking conversion hoặc giảm rủi ro ở khách high-value. Với default production, Smart Mix hợp lý hơn vì vẫn tiết kiệm trên 96% nhưng giữ web search cho Visa/Weather.
 
 ---
 
 ## Bảng kiểm
 
-- [x] Bảng đầy đủ — không còn ô trống
-- [x] Đã có 4 câu trả lời cho 4 quan sát
-- [x] Nhóm đồng thuận về số trong bảng (đã sanity check)
+- [x] Bảng đầy đủ, không còn ô trống
+- [x] Đã có 4 câu trả lời quan sát
+- [x] Số monthly được tính lại đúng từ cost/conversation × volume × 30
+- [x] Nhóm đồng thuận về tradeoff trước khi viết recommendation
