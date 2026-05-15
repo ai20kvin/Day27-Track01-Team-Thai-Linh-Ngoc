@@ -1,4 +1,8 @@
 # Ngày 27 — AI Conversation Cost Simulator
+**Thành viên thực hiện:** 
+- Thái 
+- Linh 
+- Nguyễn Thị Ngọc - 2A202600405
 
 > **Lab travel agency chatbot — bài toán kinh tế của AI Product**
 >

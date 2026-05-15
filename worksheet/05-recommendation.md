@@ -146,7 +146,7 @@ Ai trình bày: **Linh**
 
 ### Nhịp 4:30–5:00 — Hardest question prep
 
-Ai trình bày: **Ngọc**
+Ai trình bày: **Ngyễn Thị Ngọc- 2A202600405**
 
 **Câu hỏi khó nhất dự đoán**:
 

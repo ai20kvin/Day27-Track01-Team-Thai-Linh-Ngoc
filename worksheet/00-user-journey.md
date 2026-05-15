@@ -41,7 +41,7 @@ Nếu nhóm bắt đầu tính cost mà chưa biết tourist hỏi gì → mọi
 7. What local dishes do you recommend that are similar to Korean flavors?
 ```
 
-### Tourist #3 (Tên thành viên: Ngọc — vai người Việt, đi cùng bạn Slovakia, kết hợp du lịch & khảo sát đầu tư)
+### Tourist #3 (Tên thành viên: Ngyễn Thị Ngọc- 2A202600405 — vai người Việt, đi cùng bạn Slovakia, kết hợp du lịch & khảo sát đầu tư)
 
 ```text
 1. I would like to introduce Vietnam to my friend from Slovakia — which destinations
